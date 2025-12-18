@@ -1,0 +1,34 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: demo
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 开发时方便查看SQL（如果不用mybatis-plus的配置）
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+  # 热部署配置（开发环境）
+  devtools:
+    restart:
+      enabled: true
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.yuhang.demo
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  # 密钥：必须是 Base64 编码后的至少 256 位的字符串。
+  # 建议使用一个强大的随机生成器生成，这里只是一个示例！
+  secret: YXNkaWp5dWhhbmdkZW1vc3ByaW5nYm9vdDNjbG91ZHRpY2tldHNlY3JldGtleQ==
+  # 过期时间：例如 1 小时 (60 * 60 * 1000 毫秒)
+  expiration: 3600000
