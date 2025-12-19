@@ -1,10 +1,10 @@
 package com.yuhang.demo.auth.service;
 
-import com.yuhang.demo.auth.entity.MyUserDetails;
-import com.yuhang.demo.auth.entity.SysRole;
-import com.yuhang.demo.auth.entity.SysUser;
-import com.yuhang.demo.auth.mapper.RoleMapper;
-import com.yuhang.demo.auth.mapper.UserMapper;
+import com.yuhang.demo.system.entity.MyUserDetails;
+import com.yuhang.demo.system.entity.SysRole;
+import com.yuhang.demo.system.entity.SysUser;
+import com.yuhang.demo.system.mapper.SysRoleMapper;
+import com.yuhang.demo.system.mapper.SysUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,11 +18,11 @@ import java.util.List;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final UserMapper userMapper;
+    private final SysUserMapper userMapper;
 
-    private final RoleMapper roleMapper;
+    private final SysRoleMapper roleMapper;
 
-    public MyUserDetailsService(UserMapper userMapper, RoleMapper roleMapper) {
+    public MyUserDetailsService(SysUserMapper userMapper, SysRoleMapper roleMapper) {
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
     }

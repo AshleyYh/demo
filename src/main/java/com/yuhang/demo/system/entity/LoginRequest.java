@@ -1,4 +1,4 @@
-package com.yuhang.demo.auth.entity;
+package com.yuhang.demo.system.entity;
 
 import lombok.Data;
 

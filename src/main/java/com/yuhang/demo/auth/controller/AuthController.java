@@ -1,8 +1,8 @@
 package com.yuhang.demo.auth.controller;
 
-import com.yuhang.demo.auth.entity.LoginRequest;
-import com.yuhang.demo.auth.entity.LoginResponse;
-import com.yuhang.demo.auth.entity.MyUserDetails;
+import com.yuhang.demo.system.entity.LoginRequest;
+import com.yuhang.demo.system.entity.LoginResponse;
+import com.yuhang.demo.system.entity.MyUserDetails;
 import com.yuhang.demo.auth.utils.JwtUtils;
 import com.yuhang.demo.common.result.R;
 import org.springframework.security.authentication.*;
