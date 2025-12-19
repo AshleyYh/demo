@@ -3,6 +3,7 @@ package com.yuhang.demo.system.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yuhang.demo.common.annotation.Log;
 import com.yuhang.demo.system.entity.MyUserDetails;
 import com.yuhang.demo.system.entity.SysUser;
 import com.yuhang.demo.common.result.R;
@@ -77,6 +78,7 @@ public class UserController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')") // 只有管理员才能添加用户
+    @Log(title = "用户管理", businessType = "INSERT")
     public R<String> addUser(@RequestBody SysUser user) {
         boolean success = userService.saveUser(user);
         if (success) {

@@ -15,4 +15,8 @@ public class SecurityConstants {
      * 管理员用户ID
      */
     public static final Long ADMIN_USER_ID = 1L;
+
+    public static final Integer SYS_LOG_SUCCESS = 0;
+
+    public static final Integer SYS_LOG_FAILURE = 1;
 }
