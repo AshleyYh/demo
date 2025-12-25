@@ -69,4 +69,32 @@ public class SysLogServiceImpl implements SysLogService {
 
         return new PageResult<>(total, list);
     }
+
+    @Override
+    public List<SysLog> selectAllLogList(LogQueryDTO queryDTO) {
+
+        // 构建查询条件
+        Query mongoQuery = new Query();
+
+        // 模糊查询模块标题
+        if (StringUtils.hasText(queryDTO.getTitle())) {
+            // "i" 表示不区分大小写
+            Pattern pattern = Pattern.compile("^.*" + queryDTO.getTitle() + ".*$", Pattern.CASE_INSENSITIVE);
+            mongoQuery.addCriteria(Criteria.where("title").is(pattern));
+        }
+
+        // 精准匹配状态
+        if (queryDTO.getStatus() != null) {
+            mongoQuery.addCriteria(Criteria.where("status").is(queryDTO.getStatus()));
+        }
+
+        // 范围查询时间段
+        if (StringUtils.hasText(queryDTO.getBeginTime()) && StringUtils.hasText(queryDTO.getEndTime())) {
+            mongoQuery.addCriteria(Criteria.where("operTime")
+                    .gte(queryDTO.getBeginTime())
+                    .lte(queryDTO.getEndTime()));
+        }
+
+        return mongoTemplate.find(mongoQuery, SysLog.class);
+    }
 }
