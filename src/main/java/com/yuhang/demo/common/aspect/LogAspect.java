@@ -5,6 +5,7 @@ import com.yuhang.demo.common.constant.SecurityConstants;
 import com.yuhang.demo.common.utils.AddressUtils;
 import com.yuhang.demo.common.utils.IpUtils;
 import com.yuhang.demo.system.entity.SysLog;
+import com.yuhang.demo.system.service.SysLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,8 +13,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -28,10 +27,10 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class LogAspect {
 
-    private final MongoTemplate mongoTemplate;
+    private final SysLogService sysLogService;
 
-    public LogAspect(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
+    public LogAspect(SysLogService sysLogService) {
+        this.sysLogService = sysLogService;
     }
 
     // 1. 定义切入点：所有标注了 @Log 注解的方法
@@ -92,7 +91,7 @@ public class LogAspect {
         }
         // 保存到 MongoDB (生产环境建议这里调用一个带有 @Async 的 Service)
         CompletableFuture.runAsync(() -> {
-            mongoTemplate.save(sysLog);
+            sysLogService.saveLog(sysLog);
         });
     }
 }

@@ -96,6 +96,12 @@
             <artifactId>ip2region</artifactId>
             <version>2.7.0</version>
         </dependency>
+        <!-- excel流式写入 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.3.2</version>
+        </dependency>
     </dependencies>
 
     <build>
