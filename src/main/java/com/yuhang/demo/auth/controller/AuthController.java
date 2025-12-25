@@ -5,6 +5,7 @@ import com.yuhang.demo.system.entity.LoginResponse;
 import com.yuhang.demo.system.entity.MyUserDetails;
 import com.yuhang.demo.auth.utils.JwtUtils;
 import com.yuhang.demo.common.result.R;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -21,11 +22,13 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, RedisTemplate<String, String> redisTemplate) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
+        this.redisTemplate = redisTemplate;
     }
 
     /**
@@ -33,6 +36,19 @@ public class AuthController {
      */
     @PostMapping("/login")
     public R<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+
+        // 1. 从 Redis 获取验证码
+        String verifyKey = "captcha_codes:" + loginRequest.getUuid();
+        String captcha = redisTemplate.opsForValue().get(verifyKey);
+        // 2. 校验
+        if (captcha == null) {
+            throw new RuntimeException("验证码已过期");
+        }
+        if (!captcha.equalsIgnoreCase(loginRequest.getCode())) {
+            throw new RuntimeException("验证码错误");
+        }
+        // 3. 校验通过后删除 Redis 记录（防止重用）
+        redisTemplate.delete(verifyKey);
 
         // 1. 将用户名和密码封装成 Spring Security 要求的 Token 对象
         UsernamePasswordAuthenticationToken authenticationToken =

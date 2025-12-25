@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // 前后端分离通常关闭 csrf
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 禁用 session，用 JWT
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/register").permitAll() // 登录注册接口直接放行
+                        .requestMatchers("/auth/login", "/auth/register", "/captcha/captchaImage").permitAll() // 登录注册接口直接放行
                         .requestMatchers("/admin/**").hasRole("ADMIN") // /admin 开头的必须有 ADMIN 角色
                         .anyRequest().authenticated() // 其他接口必须登录
                 )
